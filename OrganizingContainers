@@ -1,0 +1,56 @@
+public static String organizingContainers(List<List<Integer>> container) {
+        String result = "Impossible";
+
+        int diffTypeOfBalls = container.get(0).size();
+        System.out.println("different number of balls = " + diffTypeOfBalls);
+
+        HashMap<Integer, Integer> ballCount = new HashMap<>();
+
+        int maxContainerSize = Integer.MIN_VALUE;
+        int minContainerSize = Integer.MAX_VALUE;
+
+        int totalValueInContainer = 0;
+        for (int i = 0; i < container.size(); i++) {
+            for (int j = 0; j < container.get(i).size(); j++) {
+                totalValueInContainer += container.get(i).get(j);
+                if (ballCount.containsKey(j)) {
+                    int temp = container.get(i).get(j);
+                    temp += ballCount.get(j);
+                    ballCount.put(j, temp);
+                } else {
+                    ballCount.put(j, container.get(i).get(j));
+                }
+            }
+            // 0, 1, 2, 3 = 6
+            // 5, 1, 2, 3 = 11
+            if (totalValueInContainer != 0 && totalValueInContainer > maxContainerSize) {
+                maxContainerSize = totalValueInContainer; // 6, 11
+            }
+            if (totalValueInContainer != 0 && totalValueInContainer < minContainerSize){
+                minContainerSize = totalValueInContainer; // 6
+            }
+            totalValueInContainer = 0;
+        }
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+
+        for (Map.Entry<Integer, Integer> entry : ballCount.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+            }
+            if (entry.getValue() < min) {
+                min = entry.getValue();
+            }
+        }
+
+        System.out.println("MaxContainer: " + maxContainerSize);
+        System.out.println("MinContainer: " + minContainerSize);
+        System.out.println("MaxNumber: " + max);
+        System.out.println("MinNumber: " + min);
+
+        if (max <= maxContainerSize && min <= minContainerSize) {
+            result = "Possible";
+        }
+
+        return result;
+    }
